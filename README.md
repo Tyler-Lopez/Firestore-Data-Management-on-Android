@@ -21,3 +21,5 @@ TO-DO: Sorting and filtering methods for navigating the collection data structur
 https://firebase.google.com/docs/database/android/lists-of-data#kotlin+ktx
 
 https://www.youtube.com/watch?v=4gUeyNkGE3g
+
+https://firebase.google.com/docs/firestore/security/rules-conditions
