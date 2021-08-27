@@ -60,7 +60,7 @@ class RandomPersonGenerator {
         "Jones"
     )
 
-    fun generateRandomPerson(): MainActivity.Person {
+    fun generateRandomPerson(): Person {
         val rnd: Random = Random(1337)
         val rnd1: Random = Random(1338)
         val rnd2: Random = Random(100)
@@ -69,6 +69,6 @@ class RandomPersonGenerator {
         val lastName = randomLastNames[rnd1.nextInt(0, randomLastNames.lastIndex)]
         val age = rnd1.nextInt(18, 75)
 
-        return MainActivity.Person(firstName, lastName, age)
+        return Person(firstName, lastName, age)
     }
 }
