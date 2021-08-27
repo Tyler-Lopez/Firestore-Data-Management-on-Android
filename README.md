@@ -18,3 +18,4 @@ TO-DO: Sorting methods for navigating the collection data structure.
 
 ## Useful Resources
 https://firebase.google.com/docs/database/android/lists-of-data#kotlin+ktx
+https://www.youtube.com/watch?v=4gUeyNkGE3g
