@@ -14,7 +14,6 @@ import androidx.navigation.NavController
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-private val personCollectionRef = Firebase.firestore.collection("persons")
 
 
 @Composable
@@ -87,7 +86,7 @@ fun AddUserScreen(navController: NavController) {
                                 age = ageState.toInt()
                             )
                             // Navigate us to the other screen.
-                            navController.navigate(Screen.ViewUsersScreen.withArgs(textFieldState))
+                            navController.navigate(Screen.ViewUsersScreen.route)
                         }, modifier = Modifier
                             .padding(5.dp)
 
@@ -95,7 +94,7 @@ fun AddUserScreen(navController: NavController) {
                             Text("Register")
                         }
                         Button(onClick = {
-                            navController.navigate(Screen.ViewUsersScreen.withArgs("Tyler"))
+                            navController.navigate(Screen.ViewUsersScreen.route)
                         }, modifier = Modifier
                             .padding(5.dp)) {
                             Text("View Data")
@@ -113,13 +112,3 @@ fun uploadData(firstName: String, lastName: String, age: Int) {
     savePerson(person)
 }
 
-private fun savePerson(person: Person) {
-    personCollectionRef.add(person).addOnSuccessListener { documentReference -> println("Successfully updated to Firestore. $documentReference") }
-        .addOnFailureListener { e -> "Did not successfully upload to Firestore $e"}
-}
-
-data class Person(
-    var firstName: String = "",
-    var lastName: String = "",
-    var age: Int = -1
-)

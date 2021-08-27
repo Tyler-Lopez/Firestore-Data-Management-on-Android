@@ -3,7 +3,9 @@ package com.company.firestoreexample
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Button
+import androidx.compose.material.RadioButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -13,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -25,7 +28,7 @@ private val personCollectionRef = Firebase.firestore.collection("persons")
 
 
 @Composable
-fun ViewUserScreen(name: String?) {
+fun ViewUserScreen(navController: NavController) {
 
     var personList = remember { mutableStateOf(mutableListOf<Person>()) }
     Scaffold(
@@ -34,26 +37,43 @@ fun ViewUserScreen(name: String?) {
                 .fillMaxSize()
                 .background(Color.Cyan),
             horizontalAlignment = Alignment.CenterHorizontally) {
-                for (person in personList.value) {
-                    Text("${person.firstName} ${person.lastName} ${person.age}")
-                    Spacer(modifier = Modifier.height(10.dp))
+
+                Button(onClick = {
+                    navController.navigate(Screen.AddUserScreen.route)
+                }, modifier = Modifier
+                    .padding(5.dp)) {
+                    Text("Return Home")
                 }
-                Text(text = "Update data.",
-                modifier = Modifier.clickable {
-                    val tmpList = mutableListOf<Person>()
-                    personCollectionRef.get().addOnSuccessListener {
-                            collection ->
-                        for (document in collection.documents) {
-                            println("Iteration.")
-                            val person = document.toObject<Person>()
-                            println("${person?.firstName} ${person?.lastName} ${person?.age}")
+                Button(onClick = {
+                    for (i in 0 until 5) {
+                        val person = RandomPersonGenerator().generateRandomPerson()
+                        savePerson(person)
+                        val tmpList = mutableListOf<Person>()
+                        personCollectionRef.get().addOnSuccessListener {
+                                collection ->
+                            for (document in collection.documents) {
+                                println("Iteration.")
+                                val person = document.toObject<Person>()
+                                println("${person?.firstName} ${person?.lastName} ${person?.age}")
 
-                            if(person != null) tmpList.add(person)
-                        }
-                        personList.value = tmpList
+                                if(person != null) tmpList.add(person)
+                            }
+                            personList.value = tmpList
 
-                    }.addOnFailureListener { e -> println("Failed to retrieve data.")}
-                })
+                        }.addOnFailureListener { e -> println("Failed to retrieve data.")}
+                    }
+                }, modifier = Modifier
+                    .padding(5.dp)) {
+                    Text("Add 5 Random People")
+                }
+                LazyColumn {
+                    items(personList.value.size) {
+                        val person = personList.value[it]
+                            Text("${person.firstName} ${person.lastName} ${person.age}")
+                            Spacer(modifier = Modifier.height(10.dp))
+                    }
+                }
+
                 val tmpList = mutableListOf<Person>()
                 personCollectionRef.get().addOnSuccessListener {
                         collection ->
@@ -71,3 +91,5 @@ fun ViewUserScreen(name: String?) {
         }
     )
 }
+
+

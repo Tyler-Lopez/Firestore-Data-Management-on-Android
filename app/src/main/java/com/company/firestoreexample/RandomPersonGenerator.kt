@@ -61,13 +61,11 @@ class RandomPersonGenerator {
     )
 
     fun generateRandomPerson(): Person {
-        val rnd: Random = Random(1337)
-        val rnd1: Random = Random(1338)
-        val rnd2: Random = Random(100)
+        val rnd: Random = Random
 
         val firstName = randomFirstNames[rnd.nextInt(0, randomFirstNames.lastIndex)] // Not absolutely certain this is inclusive of last index.
-        val lastName = randomLastNames[rnd1.nextInt(0, randomLastNames.lastIndex)]
-        val age = rnd1.nextInt(18, 75)
+        val lastName = randomLastNames[rnd.nextInt(0, randomLastNames.lastIndex)]
+        val age = rnd.nextInt(18, 75)
 
         return Person(firstName, lastName, age)
     }
