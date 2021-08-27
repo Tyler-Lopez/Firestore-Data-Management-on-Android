@@ -1,5 +1,5 @@
 # JetpackCompose-Firestore-Example
-A Jetpack Compose repository demonstrating the use of a Firebase back-end to add, retrieve, filter, and sort the contents of a data class(Person) from a Cloud Firestore Database. 
+A thoroughly commented Jetpack Compose repository demonstrating the use of a Firebase back-end to add, retrieve, filter, and sort the contents of a data class(Person) from a Cloud Firestore Database. 
 
 Includes an on-demand population of the database with a bulk amount of data with a simple random person generator.
 
