@@ -75,7 +75,7 @@ fun ViewUserScreen(navController: NavController) {
                         personList.value = tmpList
                     }.addOnFailureListener { e -> println("Failed to retrieve data.")}                }, modifier = Modifier
                     .padding(5.dp)) {
-                    Text("Wipe Dat")
+                    Text("Wipe Data")
 
                 }
                 LazyColumn {
