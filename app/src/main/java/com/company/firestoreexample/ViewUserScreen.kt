@@ -54,6 +54,19 @@ fun ViewUserScreen(name: String?) {
 
                     }.addOnFailureListener { e -> println("Failed to retrieve data.")}
                 })
+                val tmpList = mutableListOf<Person>()
+                personCollectionRef.get().addOnSuccessListener {
+                        collection ->
+                    for (document in collection.documents) {
+                        println("Iteration.")
+                        val person = document.toObject<Person>()
+                        println("${person?.firstName} ${person?.lastName} ${person?.age}")
+
+                        if(person != null) tmpList.add(person)
+                    }
+                    personList.value = tmpList
+
+                }.addOnFailureListener { e -> println("Failed to retrieve data.")}
             }
         }
     )
