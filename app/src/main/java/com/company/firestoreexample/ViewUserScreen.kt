@@ -4,10 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Button
-import androidx.compose.material.RadioButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -66,10 +63,29 @@ fun ViewUserScreen(navController: NavController) {
                     .padding(5.dp)) {
                     Text("Add 5 Random People")
                 }
+                Button(onClick = {
+                    personCollectionRef.get().addOnSuccessListener {
+                            collection ->
+                        for (document in collection.documents) {
+                            personCollectionRef.document("${document.id}").delete()
+                                .addOnSuccessListener { println("SuccessDelete") }
+                                .addOnFailureListener { println("FailureDelete")}
+                        }
+                        val tmpList = mutableListOf<Person>()
+                        personList.value = tmpList
+                    }.addOnFailureListener { e -> println("Failed to retrieve data.")}                }, modifier = Modifier
+                    .padding(5.dp)) {
+                    Text("Wipe Dat")
+
+                }
                 LazyColumn {
                     items(personList.value.size) {
                         val person = personList.value[it]
-                            Text("${person.firstName} ${person.lastName} ${person.age}")
+                        Card(elevation = 8.dp,
+                        backgroundColor = Color.White){
+                            Text(text = "${person.firstName} ${person.lastName} ${person.age}",
+                            modifier = Modifier.padding(10.dp))
+                        }
                             Spacer(modifier = Modifier.height(10.dp))
                     }
                 }
