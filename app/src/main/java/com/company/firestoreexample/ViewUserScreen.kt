@@ -11,7 +11,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -38,7 +41,8 @@ fun ViewUserScreen(navController: NavController) {
                 Button(onClick = {
                     navController.navigate(Screen.AddUserScreen.route)
                 }, modifier = Modifier
-                    .padding(5.dp)) {
+                    .padding(horizontal = 5.dp, vertical = 2.dp)
+                    .fillMaxWidth()) {
                     Text("Return Home")
                 }
                 Button(onClick = {
@@ -60,7 +64,8 @@ fun ViewUserScreen(navController: NavController) {
                         }.addOnFailureListener { e -> println("Failed to retrieve data.")}
                     }
                 }, modifier = Modifier
-                    .padding(5.dp)) {
+                    .padding(horizontal = 5.dp, vertical = 2.dp)
+                    .fillMaxWidth()) {
                     Text("Add 5 Random People")
                 }
                 Button(onClick = {
@@ -73,20 +78,62 @@ fun ViewUserScreen(navController: NavController) {
                         }
                         val tmpList = mutableListOf<Person>()
                         personList.value = tmpList
-                    }.addOnFailureListener { e -> println("Failed to retrieve data.")}                }, modifier = Modifier
-                    .padding(5.dp)) {
+                    }.addOnFailureListener { e -> println("Failed to retrieve data.")} },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 5.dp, vertical = 2.dp)) {
                     Text("Wipe Data")
 
                 }
-                LazyColumn {
-                    items(personList.value.size) {
-                        val person = personList.value[it]
-                        Card(elevation = 8.dp,
-                        backgroundColor = Color.White){
-                            Text(text = "${person.firstName} ${person.lastName} ${person.age}",
-                            modifier = Modifier.padding(10.dp))
+                if (personList.value.size == 0) {
+                    Card(
+                        elevation = 8.dp,
+                        modifier = Modifier
+                            .padding(horizontal = 5.dp),
+                        backgroundColor = Color.White
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .padding(15.dp)
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = "Data set is loading or is empty.",
+                                fontSize = 15.sp,
+                            )
                         }
-                            Spacer(modifier = Modifier.height(10.dp))
+                    }
+                }
+                else {
+                    LazyColumn {
+                        items(personList.value.size) {
+                            val person = personList.value[it]
+                            Card(
+                                elevation = 8.dp,
+                                modifier = Modifier
+                                    .padding(horizontal = 5.dp),
+                                backgroundColor = Color.White
+                            ) {
+                                Row(
+                                    modifier = Modifier
+                                        .padding(15.dp)
+                                        .fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Text(
+                                        text = "${person.firstName} ${person.lastName}",
+                                        fontSize = 15.sp,
+                                        fontFamily = FontFamily.SansSerif
+                                    )
+                                    Text(
+                                        text = "${person.age}",
+                                        fontFamily = FontFamily.Monospace,
+                                    )
+                                }
+                            }
+                            Spacer(modifier = Modifier.height(3.dp))
+                        }
                     }
                 }
 
